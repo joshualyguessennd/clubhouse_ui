@@ -12,63 +12,130 @@ class SalonState extends State<Salon> {
     var screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12),
-      child: Container(
-        height: screenSize.height * 0.25,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xfffcfcfa),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Football & Tchintchins',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.85,
+                  width: double.infinity, // Set the desired height
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    '30 Mins',
-                    style: TextStyle(
-                      color: Colors.green[700],
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 10, right: 10, top: 5),
-              child: Divider(),
-            ),
-            SizedBox(
-              height: screenSize.height * 0.01,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: screenSize.width * 0.4,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Container(
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 12, top: 15, right: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Football & Tchintchins',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8, left: 12, right: 12),
+                        child: Text('En vrai Messi est fort que Cristiano'),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        },
+        child: Container(
+          height: screenSize.height * 0.25,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: const Color(0xfffcfcfa),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Football & Tchintchins',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '30 Mins',
+                      style: TextStyle(
+                        color: Colors.green[700],
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                child: Divider(),
+              ),
+              SizedBox(
+                height: screenSize.height * 0.01,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: screenSize.width * 0.4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Container(
+                                height: screenSize.height * 0.041,
+                                width: screenSize.width * 0.091,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            Container(
                               height: screenSize.height * 0.041,
                               width: screenSize.width * 0.091,
                               decoration: BoxDecoration(
@@ -76,125 +143,117 @@ class SalonState extends State<Salon> {
                                 color: Colors.grey,
                               ),
                             ),
-                          ),
-                          Container(
-                            height: screenSize.height * 0.041,
-                            width: screenSize.width * 0.091,
+                            Container(
+                              height: screenSize.height * 0.041,
+                              width: screenSize.width * 0.091,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Container(
+                              height: screenSize.height * 0.041,
+                              width: screenSize.width * 0.091,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: screenSize.height * 0.008,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.grey,
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: const Text(
+                              ' +50 ',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
                             ),
                           ),
-                          Container(
-                            height: screenSize.height * 0.041,
-                            width: screenSize.width * 0.091,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.grey,
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: screenSize.width * 0.05,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Text(
+                            'Michael Kouadio',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Container(
-                            height: screenSize.height * 0.041,
-                            width: screenSize.width * 0.091,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.grey,
-                            ),
+                          // Optional: You can use a SizedBox for some spacing between the text and the icon.
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.mic, // Microphone icon
+                            color: Colors.black,
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: screenSize.height * 0.008,
+                        height: screenSize.height * 0.02,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Text(
-                            ' +50 ',
+                      const Text(
+                        'Eva Assemian',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenSize.height * 0.02,
+                      ),
+                      const Row(
+                        children: [
+                          Text(
+                            'Junior Coulibaly',
                             style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
+                          // Optional: You can use a SizedBox for some spacing between the text and the icon.
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.mic, // Microphone icon
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: screenSize.height * 0.02,
+                      ),
+                      const Text(
+                        'Ali Dramera',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
-                      )
+                      ),
                     ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.05,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Row(
-                      children: [
-                        Text(
-                          'Michael Kouadio',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // Optional: You can use a SizedBox for some spacing between the text and the icon.
-                        SizedBox(width: 8),
-                        Icon(
-                          Icons.mic, // Microphone icon
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenSize.height * 0.02,
-                    ),
-                    const Text(
-                      'Eva Assemian',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenSize.height * 0.02,
-                    ),
-                    const Row(
-                      children: [
-                        Text(
-                          'Junior Coulibaly',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // Optional: You can use a SizedBox for some spacing between the text and the icon.
-                        SizedBox(width: 8),
-                        Icon(
-                          Icons.mic, // Microphone icon
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenSize.height * 0.02,
-                    ),
-                    const Text(
-                      'Ali Dramera',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
