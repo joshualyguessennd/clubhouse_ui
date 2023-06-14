@@ -65,6 +65,47 @@ class SalonState extends State<Salon> {
                         padding: EdgeInsets.only(top: 8, left: 12, right: 12),
                         child: Text('En vrai Messi est fort que Cristiano'),
                       ),
+                      SizedBox(
+                        height: screenSize.height * 0.015,
+                      ),
+                      GridParticipant(),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 30, right: 30, bottom: 20),
+                        child: Container(
+                          width: double.infinity,
+                          height: screenSize.height * 0.07,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(),
+                            color: const Color(0xffC8C7B3),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Demander le micro',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 30, right: 30, bottom: 50),
+                        child: Container(
+                          width: double.infinity,
+                          height: screenSize.height * 0.07,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(),
+                          ),
+                          child: const Center(
+                              child: Text('Quitter le salon',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold))),
+                        ),
+                      )
                     ],
                   ),
                 );
@@ -257,5 +298,70 @@ class SalonState extends State<Salon> {
         ),
       ),
     );
+  }
+}
+
+class GridParticipant extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.count(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8.0, // Horizontal spacing
+          mainAxisSpacing: 8.0, // Vertical spacing
+          childAspectRatio:
+              1.0, // Square items (use different value if you want different proportions)
+          children:
+              buildRoundItems(7, [true, false, true, false, true, true, false]),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> buildRoundItems(int count, List<bool> hasGreenBorder) {
+    List<Widget> items = [];
+    for (int i = 0; i < count; i++) {
+      items.add(
+        Column(
+          children: [
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: hasGreenBorder[i]
+                          ? Colors.green
+                          : Colors.transparent, // Conditional border color
+                      width: 3.0, // Border width
+                    ),
+                  ),
+                ),
+                if (hasGreenBorder[i])
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Icon(
+                      Icons.mic,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+              ],
+            ),
+            Text(
+              "Participant $i", // You can replace this with actual user names from a list
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+      );
+    }
+    return items;
   }
 }
