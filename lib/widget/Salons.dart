@@ -313,14 +313,15 @@ class GridParticipant extends StatelessWidget {
           mainAxisSpacing: 8.0, // Vertical spacing
           childAspectRatio:
               1.0, // Square items (use different value if you want different proportions)
-          children:
-              buildRoundItems(7, [true, false, true, false, true, true, false]),
+          children: buildRoundItems(
+              context, 7, [true, false, true, false, true, true, false]),
         ),
       ),
     );
   }
 
-  List<Widget> buildRoundItems(int count, List<bool> hasGreenBorder) {
+  List<Widget> buildRoundItems(
+      BuildContext context, int count, List<bool> hasGreenBorder) {
     List<Widget> items = [];
     for (int i = 0; i < count; i++) {
       items.add(
@@ -329,23 +330,37 @@ class GridParticipant extends StatelessWidget {
             Stack(
               alignment: Alignment.bottomRight,
               children: [
-                Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: hasGreenBorder[i]
-                          ? Colors.green
-                          : Colors.transparent, // Conditional border color
-                      width: 3.0, // Border width
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ParticipantLiveDetails(
+                          name: "participant $i",
+                          followers: '1500',
+                          followings: '100',
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: hasGreenBorder[i]
+                            ? Colors.green
+                            : Colors.transparent, // Conditional border color
+                        width: 3.0, // Border width
+                      ),
                     ),
                   ),
                 ),
                 if (hasGreenBorder[i])
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
+                  const Padding(
+                    padding: EdgeInsets.all(4.0),
                     child: Icon(
                       Icons.mic,
                       size: 20,
@@ -356,12 +371,131 @@ class GridParticipant extends StatelessWidget {
             ),
             Text(
               "Participant $i", // You can replace this with actual user names from a list
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
           ],
         ),
       );
     }
     return items;
+  }
+}
+
+class ParticipantLiveDetails extends StatelessWidget {
+  String? name;
+  String? picture;
+  String? followers;
+  String? followings;
+
+  ParticipantLiveDetails(
+      {super.key, this.name, this.picture, this.followers, this.followings});
+
+  @override
+  Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    return SizedBox(
+      height: screenSize.height * 0.41,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15, top: 15),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        Container(
+                          height: 70,
+                          width: 70,
+                          decoration: const BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: screenSize.height * 0.01),
+                      child: Text(
+                        name!,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 20, top: 30),
+                child: Container(
+                  height: 40,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Suivre',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: screenSize.height * 0.02,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Row(
+              children: [
+                Text(
+                  followers!,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ), // numbers of followers
+                SizedBox(
+                  width: screenSize.width * 0.01,
+                ),
+                const Text(
+                  'Abonnes',
+                  style: TextStyle(fontWeight: FontWeight.w200),
+                ),
+                SizedBox(
+                  width: screenSize.width * 0.02,
+                ),
+                Text(
+                  followings!,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ), // number of following
+                SizedBox(
+                  width: screenSize.width * 0.01,
+                ),
+                const Text(
+                  'Abonnemenents',
+                  style: TextStyle(fontWeight: FontWeight.w200),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: screenSize.height * 0.04,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Container(
+                child: Text('Have fun, make mistake but dont foget to live')),
+          )
+        ],
+      ),
+    );
   }
 }
