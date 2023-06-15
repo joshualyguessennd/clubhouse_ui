@@ -54,31 +54,32 @@ class HomeState extends State<Home> {
             ],
           ),
           Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
-                Salon(),
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
-                Salon(),
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
-                Salon(),
-                SizedBox(
-                  height: screenSize.height * 0.02,
-                ),
-                Salon(),
-                SizedBox(
-                  height: screenSize.height * 0.03,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: screenSize.height * 0.02,
+                  ),
+                  Salon(),
+                  SizedBox(
+                    height: screenSize.height * 0.02,
+                  ),
+                  Salon(),
+                  SizedBox(
+                    height: screenSize.height * 0.02,
+                  ),
+                  Salon(),
+                  SizedBox(
+                    height: screenSize.height * 0.02,
+                  ),
+                  Salon(),
+                  SizedBox(
+                    height: screenSize.height * 0.03,
+                  ),
+                ],
+              ),
             ),
-          ))
+          )
         ],
       ),
     );

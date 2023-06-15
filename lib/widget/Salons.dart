@@ -1,5 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+const appId = '<>';
+const token = '<>';
+const channel = 'voice';
 
 class Salon extends StatefulWidget {
   @override
@@ -7,8 +13,62 @@ class Salon extends StatefulWidget {
 }
 
 class SalonState extends State<Salon> {
+  int? _remoteUid;
+  bool _localUserJoined = false;
+  late RtcEngine _engine;
   late double _modalHeight;
   bool hasEntered = false;
+
+  Future<void> initAgora() async {
+    await [Permission.microphone].request();
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(const RtcEngineContext(
+      appId: appId,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    ));
+
+    await _engine.disableVideo();
+
+    _engine.registerEventHandler(
+      RtcEngineEventHandler(
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          debugPrint("local user ${connection.localUid} joined");
+          setState(() {
+            _localUserJoined = true;
+          });
+        },
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          debugPrint("remote user $remoteUid joined");
+          setState(() {
+            _remoteUid = remoteUid;
+          });
+        },
+        onUserOffline: (RtcConnection connection, int remoteUid,
+            UserOfflineReasonType reason) {
+          debugPrint("remote user $remoteUid left channel");
+          setState(() {
+            _remoteUid = null;
+          });
+        },
+        onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
+          debugPrint(
+              '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
+        },
+      ),
+    );
+
+    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    await _engine.enableAudio();
+    await _engine.startPreview();
+
+    await _engine.joinChannel(
+      token: token,
+      channelId: channel,
+      uid: 0,
+      options: const ChannelMediaOptions(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -97,7 +157,7 @@ class SalonState extends State<Salon> {
                                   height: screenSize.height * 0.01,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 15),
+                                  padding: const EdgeInsets.only(left: 15),
                                   child: Row(
                                     children: [
                                       Column(
@@ -116,7 +176,7 @@ class SalonState extends State<Salon> {
                                                 top: screenSize.height * 0.01),
                                             child: const Text(
                                               'Participant 0',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           )
@@ -189,6 +249,19 @@ class SalonState extends State<Salon> {
                                       setState(() {
                                         hasEntered = !hasEntered;
                                       });
+                                      initAgora();
+                                      if (hasEntered) {
+                                        AgoraVideoView(
+                                          controller:
+                                              VideoViewController.remote(
+                                            rtcEngine: _engine,
+                                            canvas:
+                                                VideoCanvas(uid: _remoteUid),
+                                            connection: const RtcConnection(
+                                                channelId: channel),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       height: screenSize.height * 0.07,
@@ -283,6 +356,7 @@ class SalonState extends State<Salon> {
                                   onTap: () {
                                     Navigator.pop(context);
                                     hasEntered = !hasEntered;
+                                    _engine.leaveChannel();
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(
@@ -295,11 +369,13 @@ class SalonState extends State<Salon> {
                                         border: Border.all(),
                                       ),
                                       child: const Center(
-                                          child: Text('Quitter le salon',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight:
-                                                      FontWeight.bold))),
+                                        child: Text(
+                                          'Quitter le salon',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 )
