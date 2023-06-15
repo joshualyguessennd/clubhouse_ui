@@ -89,21 +89,26 @@ class SalonState extends State<Salon> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 30, right: 30, bottom: 50),
-                        child: Container(
-                          width: double.infinity,
-                          height: screenSize.height * 0.07,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 30, right: 30, bottom: 50),
+                          child: Container(
+                            width: double.infinity,
+                            height: screenSize.height * 0.07,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(),
+                            ),
+                            child: const Center(
+                                child: Text('Quitter le salon',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold))),
                           ),
-                          child: const Center(
-                              child: Text('Quitter le salon',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold))),
                         ),
                       )
                     ],
