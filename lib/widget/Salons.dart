@@ -7,6 +7,8 @@ class Salon extends StatefulWidget {
 }
 
 class SalonState extends State<Salon> {
+  late double _modalHeight;
+  bool hasEntered = false;
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -14,105 +16,292 @@ class SalonState extends State<Salon> {
       padding: const EdgeInsets.only(left: 12, right: 12),
       child: GestureDetector(
         onTap: () {
+          _modalHeight =
+              MediaQuery.of(context).size.height * 0.5; // Initial height
           showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               builder: (BuildContext context) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.85,
-                  width: double.infinity, // Set the desired height
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 12, top: 15, right: 12),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Football & Tchintchins',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.black,
-                                size: 20,
-                              ),
-                            )
-                          ],
+                return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setModalState) {
+                    return Container(
+                      height: _modalHeight,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 8, left: 12, right: 12),
-                        child: Text('En vrai Messi est fort que Cristiano'),
-                      ),
-                      SizedBox(
-                        height: screenSize.height * 0.015,
-                      ),
-                      GridParticipant(),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 30, right: 30, bottom: 20),
-                        child: Container(
-                          width: double.infinity,
-                          height: screenSize.height * 0.07,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(),
-                            color: const Color(0xffC8C7B3),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Demander le micro',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 30, right: 30, bottom: 50),
-                          child: Container(
-                            width: double.infinity,
-                            height: screenSize.height * 0.07,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(),
-                            ),
-                            child: const Center(
-                                child: Text('Quitter le salon',
+                      child: !hasEntered
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 20, left: 15),
+                                      child: Icon(Icons.close),
+                                    ),
+                                    Spacer(),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 20, right: 15),
+                                      child: Icon(Icons.file_upload_outlined),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 15, top: 8),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'LIVE .',
+                                        style: TextStyle(
+                                          color: Colors.green[700],
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Text('50 participants')
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: screenSize.height * 0.01,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    'Football & Tchintchins',
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold))),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: screenSize.height * 0.01,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Container(
+                                            height: 80,
+                                            width: 80,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.grey,
+                                              shape: BoxShape.circle,
+                                              // Border width
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: screenSize.height * 0.01),
+                                            child: const Text(
+                                              'Participant 0',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: screenSize.width * 0.04,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Container(
+                                            height: 80,
+                                            width: 80,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.grey,
+                                              shape: BoxShape.circle,
+                                              // Border width
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: screenSize.height * 0.01),
+                                            child: const Text(
+                                              'Participant 1',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: screenSize.height * 0.04,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15),
+                                  child: Container(
+                                    height: screenSize.height * 0.05,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(width: 0.5),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: const Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '48 autres participants',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: screenSize.height * 0.02,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setModalState(() {
+                                        _modalHeight =
+                                            MediaQuery.of(context).size.height *
+                                                0.85; // New height
+                                      });
+                                      setState(() {
+                                        hasEntered = !hasEntered;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: screenSize.height * 0.07,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(width: 0.5),
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: const Color(0xffC8C7B3),
+                                      ),
+                                      child: const Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Entrer Dans le Salon',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 12, top: 15, right: 12),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Football & Tchintchins',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            hasEntered = !hasEntered;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Colors.black,
+                                          size: 20,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 8, left: 12, right: 12),
+                                  child: Text(
+                                      'En vrai Messi est fort que Cristiano'),
+                                ),
+                                SizedBox(
+                                  height: screenSize.height * 0.015,
+                                ),
+                                GridParticipant(),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 30, right: 30, bottom: 20),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: screenSize.height * 0.07,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(),
+                                      color: const Color(0xffC8C7B3),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Demander le micro',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    hasEntered = !hasEntered;
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 30, right: 30, bottom: 50),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: screenSize.height * 0.07,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(),
+                                      ),
+                                      child: const Center(
+                                          child: Text('Quitter le salon',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                    );
+                  },
                 );
               });
         },
