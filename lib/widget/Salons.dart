@@ -25,7 +25,8 @@ class SalonState extends State<Salon> {
                 return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setModalState) {
                     return Container(
-                      height: _modalHeight,
+                      height:
+                          !hasEntered ? _modalHeight : screenSize.height * 0.85,
                       width: double.infinity,
                       decoration: const BoxDecoration(
                         color: Colors.white,
@@ -39,15 +40,19 @@ class SalonState extends State<Salon> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Row(
+                                Row(
                                   children: [
                                     Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, left: 15),
-                                      child: Icon(Icons.close),
+                                      padding: const EdgeInsets.only(
+                                          top: 20, left: 15),
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Icon(Icons.close)),
                                     ),
-                                    Spacer(),
-                                    Padding(
+                                    const Spacer(),
+                                    const Padding(
                                       padding:
                                           EdgeInsets.only(top: 20, right: 15),
                                       child: Icon(Icons.file_upload_outlined),
